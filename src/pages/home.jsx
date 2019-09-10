@@ -378,6 +378,7 @@ class Home extends Component {
         return (
             <div>
                 <div className="center-container">
+                    <div className="title">Simple (?) Form <span> <a href="https://github.com/Av0c/jubic-react-challenge">Github</a></span></div>
                     <Form
                         formAdd={(state) => {this.formAdd(state)}}
                         />
