@@ -12,7 +12,7 @@ body, #app {
 }
 
 input, select, textarea, button {
-    font-family: "Roboto", sans-serif;
+    font-family: inherit;
 }
 
 @theme-dark-0dp: #fff;
@@ -22,7 +22,6 @@ input, select, textarea, button {
 @theme-accent: #00b5cc;
 @red-accent: #E57373;
 @green-accent: #9CCC65;
-
 
 .popup-overlay {
     position: fixed; /* Stay in place */
@@ -82,7 +81,6 @@ input, select, textarea, button {
                 font-weight: bold;
             }
             .data {
-                font-family: "Roboto", sans-serif;
                 font-size: 20px;
                 padding: 6px 0;
                 padding-left: 10px;
@@ -249,6 +247,10 @@ input, select, textarea, button {
             }
             td {
                 font-size: 18px;
+            }
+
+            .empty-text-warn {
+                text-align: center;
             }
 
             .table-buttons {

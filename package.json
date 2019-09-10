@@ -33,6 +33,7 @@
         "webpack-merge": "^4.2.1"
     },
     "dependencies": {
+        "local-storage": "^2.0.0",
         "maptalks": "^0.44.2"
     }
 }

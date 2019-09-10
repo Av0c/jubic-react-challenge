@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
 
-import * as maptalks from 'maptalks';
-import NavBar from '~/common/navbar';
+import ls from "local-storage";
 
 class Phone extends Component {
     constructor(props) {
@@ -247,21 +246,26 @@ class Home extends Component {
         this.state = {
             currentId: 0,
             showPopup: false,
-        };
-    }
-
-    componentDidMount() {
-        // First demo item
-        localStorage.setItem("forms",
-            JSON.stringify([{
+            demoForm: {
                 name: "Quyen Duong",
                 desc: "This small webapp is developed for Jubic Oy's React challenge. However I added a small twist, which is inspired by an article a while ago, showcasing infuriating (but hilarious) UX designs. Made by (you guess it) React.",
                 comment: "'If Satan is a web-developer'",
                 phoneNumber: "0417276866",
                 birthdayMonth: "September",
                 birthdayDate: "Seventh",
-            }])
-        );
+            },
+        };
+    }
+
+    componentDidMount() {
+        var forms = ls.get("forms");
+        console.log(forms);
+        if (!forms) {
+            ls.set("forms", [this.state.demoForm]);
+            console.log([this.state.demoForm]);
+        }
+
+        this.formsRender();
     }
 
     formAdd(formData) {
@@ -273,18 +277,18 @@ class Home extends Component {
         //     forms: forms,
         // });
 
-        var forms = JSON.parse(localStorage.getItem("forms"));
+        var forms = ls.get("forms");
         forms.push(formData);
-        localStorage.setItem("forms", JSON.stringify(forms));
+        ls.set("forms", forms);
 
-        this.setState(this.state);
+        this.formsRender();
     }
 
     formDetails(id) {
         this.setState({
             currentId: id,
             showPopup: true,
-        });
+        }, () => {this.popupRender()});
     }
 
     formDelete(id) {
@@ -295,11 +299,11 @@ class Home extends Component {
         //     forms: forms,
         // });
 
-        var forms = JSON.parse(localStorage.getItem("forms"));
+        var forms = ls.get("forms");
         forms.splice(id, 1);
-        localStorage.setItem("forms", JSON.stringify(forms));
+        ls.set("forms", forms);
 
-        this.setState(this.state);
+        this.formsRender();
     }
 
     closePopup(e) {
@@ -312,12 +316,14 @@ class Home extends Component {
         }
     }
 
-    render() {
-        const { showPopup, currentId } = this.state;
-        var forms = JSON.parse(localStorage.getItem("forms"));
-        console.log(forms);
-
+    formsRender() {
+        var forms = ls.get("forms");
         var formsRender = [];
+        if (forms.length == 0) {
+            formsRender.push(
+                <tr><td colspan="3" className="empty-text-warn"><i>Empty table (Add a form to get started).</i></td></tr>
+            );
+        }
         for (var i = 0; i < forms.length; i++) {
             let form = forms[i];
             let f = i;
@@ -328,6 +334,46 @@ class Home extends Component {
                 </td></tr>
             );
         }
+
+        this.setState({
+            formsRender: formsRender,
+        });
+    }
+
+    popupRender() {
+        var forms = ls.get("forms");
+        const { currentId } = this.state;
+
+        var popupRender = (
+            <div id="popup-overlay" className="popup-overlay" onClick={(e) => {this.closePopup(e)}}>
+                <div className="popup-container">
+                    <div className="popup-header">
+                        Details
+                        <div className="popup-close-button" ><i id="popup-close-button" onClick={(e) => {this.closePopup(e)}} className="material-icons">&#xe14c;</i></div>
+                    </div>
+                    <div className="popup-content">
+                        <label>Name</label>
+                        <div className="data">{forms[currentId].name == "" ? <i>This field is blank</i> : forms[currentId].name}</div>
+                        <label>Description</label>
+                        <div className="data">{forms[currentId].desc == "" ? <i>This field is blank</i> : forms[currentId].desc}</div>
+                        <label>Comment</label>
+                        <div className="data">{forms[currentId].comment == "" ? <i>This field is blank</i> : forms[currentId].comment}</div>
+                        <label>Phone number</label>
+                        <div className="data">{forms[currentId].phoneNumber == "" ? <i>This field is blank</i> : forms[currentId].phoneNumber}</div>
+                        <label>Birthday</label>
+                        <div className="data">{forms[currentId].birthdayMonth+forms[currentId].birthdayDate == "" ? <i>This field is blank</i> : forms[currentId].birthdayMonth + " " + forms[currentId].birthdayDate}</div>
+                    </div>
+                </div>
+            </div>
+        );
+
+        this.setState({
+            popupRender: popupRender,
+        });
+    }
+
+    render() {
+        const { showPopup, formsRender, popupRender } = this.state;
 
         return (
             <div>
@@ -345,26 +391,7 @@ class Home extends Component {
                     </div>
                 </div>
                 {showPopup &&
-                    <div id="popup-overlay" className="popup-overlay" onClick={(e) => {this.closePopup(e)}}>
-                        <div className="popup-container">
-                            <div className="popup-header">
-                                Details
-                                <div className="popup-close-button" ><i id="popup-close-button" onClick={(e) => {this.closePopup(e)}} className="material-icons">&#xe14c;</i></div>
-                            </div>
-                            <div className="popup-content">
-                                <label>Name</label>
-                                <div className="data">{forms[currentId].name == "" ? <i>This field is blank</i> : forms[currentId].name}</div>
-                                <label>Description</label>
-                                <div className="data">{forms[currentId].desc == "" ? <i>This field is blank</i> : forms[currentId].desc}</div>
-                                <label>Comment</label>
-                                <div className="data">{forms[currentId].comment == "" ? <i>This field is blank</i> : forms[currentId].comment}</div>
-                                <label>Phone number</label>
-                                <div className="data">{forms[currentId].phoneNumber == "" ? <i>This field is blank</i> : forms[currentId].phoneNumber}</div>
-                                <label>Birthday</label>
-                                <div className="data">{forms[currentId].birthdayMonth+forms[currentId].birthdayDate == "" ? <i>This field is blank</i> : forms[currentId].birthdayMonth + " " + forms[currentId].birthdayDate}</div>
-                            </div>
-                        </div>
-                    </div>
+                    popupRender
                 }
             </div>
         );
