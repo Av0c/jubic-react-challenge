@@ -4,10 +4,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin'); // Auto-generate html 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // Clean dist folder every build
 
 module.exports = {
-    entry: './src/App.jsx',
+    entry: './src/App.tsx',
     output: {
-        path: __dirname + '/dist',
-        publicPath: '/',
+        path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js'
     },
     module: {
@@ -20,15 +19,10 @@ module.exports = {
             // },
             {
                 test: /\.(t|j)sx?$/,
-                exclude: /node_modules/,
                 use: {
                     loader: 'awesome-typescript-loader'
-                }
-            },
-            {
-                enforce: "pre",
-                test: /\.js$/,
-                loader: "source-map-loader"
+                },
+                exclude: /node_modules/,
             },
             {
                 test: /\.less$/,
