@@ -5,6 +5,7 @@ Live view is available here: http://www.cc.puv.fi/~e1601127/jubic-react-challeng
 
 # Resources
 ## Typescript
+- https://github.com/Microsoft/TypeScript-React-Conversion-Guide#typescript-react-conversion-guide
 - https://2ality.com/2018/04/type-notation-typescript.html
 - https://github.com/typescript-cheatsheets/react-typescript-cheatsheet#useful-react-prop-type-examples
 
