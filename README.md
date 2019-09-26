@@ -1,7 +1,9 @@
 # About
 My submission for Jubic Oy's React challenge, with a twist.
 
-Live view is available here: http://www.cc.puv.fi/~e1601127/jubic-react-challenge/
+Live versions are available here: 
+- JavaScript: http://www.cc.puv.fi/~e1601127/jubic-react-challenge/
+- TypeScript: http://www.cc.puv.fi/~e1601127/jubic-react-challenge-ts/
 
 # Resources
 ## Typescript
